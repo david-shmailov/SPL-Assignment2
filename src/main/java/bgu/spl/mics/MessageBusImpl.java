@@ -10,6 +10,7 @@ import java.util.Queue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBusImpl implements MessageBus {
+
 	private HashMap<String,Queue<Message>> map;
 	
 	@Override
@@ -41,6 +42,7 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void register(MicroService m) {
+
 
 		
 	}
