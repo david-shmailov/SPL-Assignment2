@@ -9,7 +9,11 @@ package bgu.spl.mics.application.passiveObjects;
 public class Ewok {
 	int serialNumber;
 	boolean available;
-	
+
+	public Ewok (){
+	    available = true;
+	    serialNumber = 0; //TODO figure out how this shit works
+    }
   
     /**
      * Acquires an Ewok
@@ -23,5 +27,12 @@ public class Ewok {
      */
     public void release() {
     	
+    }
+
+    /**
+     * query if the ewok is available
+     */
+    public boolean isAvailable(){
+        return available;
     }
 }
