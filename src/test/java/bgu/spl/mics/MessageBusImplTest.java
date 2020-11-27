@@ -38,23 +38,30 @@ class MessageBusImplTest {
         AttackEvent e= new AttackEvent();
         HanSoloMicroservice m1= new HanSoloMicroservice();
         C3POMicroservice m2= new C3POMicroservice();
+        messageBus.register(m1);
+        messageBus.register(m2);
+
 
         m2.subscribeEvent(AttackEvent.class, (event)->{});
         Future<Boolean> result = m1.sendEvent(e);
 
-        result.resolve(true);
-        while(!result.isDone()){};
-        messageBus.complete(e,result.get());// dont know yet what this fuc does, so i dont know what to check
+        m2.complete(e,true);
+        assertTrue(result.get());
+
+      //  messageBus.complete(e,result.get());// dont know yet what this fuc does, so i dont know what to check
 
 
     }
 
     @Test
-    void sendBroadcast() {// TODO document to this test that we check also subscribeBoradcast, and awaitMessage
+    void sendBroadcast() {// TODO document to this test that we check also subscribeBoradcast,register and awaitMessage
         Broadcast bor= new Broadcast(){};
         HanSoloMicroservice m1= new HanSoloMicroservice();
         HanSoloMicroservice m2= new HanSoloMicroservice();
         C3POMicroservice m3= new C3POMicroservice();
+        messageBus.register(m1);
+        messageBus.register(m2);
+        messageBus.register(m3);
 
         m1.subscribeBroadcast(bor.getClass(), (broadcast)->{});
         m2.subscribeBroadcast(bor.getClass(), (broadcast)->{});
@@ -77,10 +84,12 @@ class MessageBusImplTest {
     }
 
     @Test
-    void sendEvent() {// TODO document to this test that we check also subscribeEvent and awaitMessage
+    void sendEvent() {// TODO document to this test that we check also subscribeEvent , register and awaitMessage
         AttackEvent e= new AttackEvent();
         HanSoloMicroservice m1= new HanSoloMicroservice();
         C3POMicroservice m2= new C3POMicroservice();
+        messageBus.register(m1);
+        messageBus.register(m2);
 
           m2.subscribeEvent(AttackEvent.class, (event)->{});
           m1.sendEvent(e);
@@ -94,7 +103,7 @@ class MessageBusImplTest {
      }
 
     @Test
-    void register() {
+    void register() {// we check it twice on sendEvent and sendBroadcast tests.
 
     }
 
