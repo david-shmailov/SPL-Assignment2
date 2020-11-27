@@ -52,6 +52,7 @@ public class FutureTest {
         future.resolve("someResult");
         assertTrue(future.isDone());
     }
+    //TODO make sure if we need to test get(timeout)
 
 
     @Test

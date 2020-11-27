@@ -1,5 +1,9 @@
 package bgu.spl.mics;
 
+import jdk.vm.ci.code.site.Call;
+
+import java.util.HashMap;
+
 /**
  * The MicroService is an abstract class that any micro-service in the system
  * must extend. The abstract MicroService class is responsible to get and
@@ -20,12 +24,15 @@ package bgu.spl.mics;
  */
 public abstract class MicroService implements Runnable { 
     private String name;
+    private MessageBus bus;
+    private HashMap<Class<? extends Message>, Callback> actionTable;
+
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
-    public MicroService(String name) {
+    public MicroService(String name) { //TODO we need to alter the signature to be able to accept a pointer to the message-bus instance. waiting for forum answer
         this.name=name;
     }
 
@@ -51,7 +58,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-    	
+    	bus.subscribeEvent(type,this);
+    	actionTable.put(type,callback);
     }
 
     /**
@@ -75,7 +83,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-    	
+        bus.subscribeBroadcast(type,this);
+        actionTable.put(type,callback);
     }
 
     /**
@@ -91,8 +100,7 @@ public abstract class MicroService implements Runnable {
      * 	       			null in case no micro-service has subscribed to {@code e.getClass()}.
      */
     protected final <T> Future<T> sendEvent(Event<T> e) {
-    	
-        return null; 
+        return bus.sendEvent(e);
     }
 
     /**
@@ -102,7 +110,7 @@ public abstract class MicroService implements Runnable {
      * @param b The broadcast message to send
      */
     protected final void sendBroadcast(Broadcast b) {
-    	
+    	bus.sendBroadcast(b);
     }
 
     /**
@@ -116,7 +124,7 @@ public abstract class MicroService implements Runnable {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-    	
+    	bus.complete(e,result); //TODO may need to add more
     }
 
     /**
@@ -146,7 +154,20 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-    	
+    	while(true){ //TODO change true to something more serious
+    	    try {
+                Message m = bus.awaitMessage(this);
+                Callback action = actionTable.get(m);
+                action.call(m); //todo does callback receives the event as input or what??
+                if (m instanceof Event){
+                    complete((Event)m,null); //todo try to avoid this shit casting
+                }
+            }catch (IllegalStateException exp){
+    	        break;//todo figure out what to do in this case. we want it to stop the whole program and throw an exception
+            }catch (InterruptedException exp){
+    	        break;
+            }
+        }
     }
 
 }
