@@ -53,4 +53,20 @@ public class FutureTest {
         assertTrue(future.isDone());
     }
 
+
+    @Test
+    void testGet() {
+        TimeUnit unit= TimeUnit.SECONDS;
+        try {
+            unit.sleep(2);
+        }
+        catch (Exception e){};
+        assertFalse(future.isDone());
+        future.resolve("someResult");
+        try {
+            unit.sleep(2);
+        }
+        catch (Exception e){};
+        assertTrue(future.isDone());
+    }
 }
