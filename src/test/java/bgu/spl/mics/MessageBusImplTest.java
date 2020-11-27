@@ -17,6 +17,7 @@ class MessageBusImplTest {
     @BeforeEach
     void setUp() {
         messageBus=new MessageBusImpl();
+        System.out.println("bus testing");
     }
 
     @AfterEach
@@ -46,7 +47,7 @@ class MessageBusImplTest {
         messageBus.register(m2);
 
 
-        m2.subscribeEvent(AttackEvent.class, (event)->{});
+        m2.subscribeEvent(e.getClass(), (event)->{});
         Future<Boolean> result = m1.sendEvent(e);
 
         m2.complete(e,true);
@@ -77,8 +78,8 @@ class MessageBusImplTest {
         messageBus.register(m2);
         messageBus.register(m3);
 
-        m1.subscribeBroadcast(bor.getClass(), (broadcast)->{});
-        m2.subscribeBroadcast(bor.getClass(), (broadcast)->{});
+        m1.subscribeBroadcast(Broadcast.class, (broadcast)->{});
+        m2.subscribeBroadcast(Broadcast.class, (broadcast)->{});
 
         m3.sendBroadcast(bor);
 
@@ -108,8 +109,12 @@ class MessageBusImplTest {
         C3POMicroservice m2= new C3POMicroservice();
         messageBus.register(m1);
         messageBus.register(m2);
+          m2.subscribeEvent(AttackEvent.class, new Callback<AttackEvent>() {
+              @Override
+              public void call(AttackEvent c) {
 
-          m2.subscribeEvent(AttackEvent.class, (event)->{});
+              }
+          });
           m1.sendEvent(e);
           Message e2;
           try{
