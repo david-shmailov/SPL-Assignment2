@@ -53,8 +53,4 @@ public class FutureTest {
         assertTrue(future.isDone());
     }
 
-    @Test
-    void testGet() { //todo
-
-    }
 }
