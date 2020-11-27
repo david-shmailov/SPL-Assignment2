@@ -17,7 +17,6 @@ class MessageBusImplTest {
     @BeforeEach
     void setUp() {
         messageBus=new MessageBusImpl();
-        System.out.println("bus testing");
     }
 
     @AfterEach
@@ -78,11 +77,17 @@ class MessageBusImplTest {
         messageBus.register(m2);
         messageBus.register(m3);
 
-        m1.subscribeBroadcast(Broadcast.class, (broadcast)->{});
-        m2.subscribeBroadcast(Broadcast.class, (broadcast)->{});
+        Callback<Broadcast> callback=new Callback<Broadcast>() {
+            @Override
+            public void call(Broadcast c) {
+
+            }
+        };
+
+        m1.subscribeBroadcast(Broadcast.class, callback);
+        m2.subscribeBroadcast(Broadcast.class, callback);
 
         m3.sendBroadcast(bor);
-
         Message e1;
         try{
 

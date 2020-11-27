@@ -20,7 +20,7 @@ public class FutureTest {
     @BeforeEach
     public void setUp(){
         future = new Future<String>();
-        System.out.println("future testing");
+
     }
 
     @AfterEach
@@ -28,7 +28,6 @@ public class FutureTest {
     @Test
     public void testResolve(){
         String str = "someResult";
-        //future = new Future<String>();
         future.resolve(str);
         assertTrue(future.isDone());
         assertTrue(str.equals(future.get()));
@@ -43,7 +42,7 @@ public class FutureTest {
 
     @Test
     void resolve() {
-        assertFalse(!future.isDone());
+        assertFalse(future.isDone());
         future.resolve("someResult");
         assertTrue(future.isDone());
         assertEquals(future.get(),"someResult");
@@ -60,7 +59,7 @@ public class FutureTest {
 
     @Test
     void testGet() {
-        TimeUnit unit= TimeUnit.SECONDS;
+        TimeUnit unit= TimeUnit.MICROSECONDS;
         try {
             unit.sleep(2);
         }

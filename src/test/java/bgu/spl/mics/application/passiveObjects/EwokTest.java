@@ -11,7 +11,6 @@ class EwokTest {
     @BeforeEach
     void setUp() {
         ewok = new Ewok();
-        System.out.println("ewok testing");
     }
 
     @AfterEach
