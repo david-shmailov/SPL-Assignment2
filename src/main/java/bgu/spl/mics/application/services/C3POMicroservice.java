@@ -30,15 +30,16 @@ public class C3POMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-        Callback<AttackEvent> callback1=new Callback<AttackEvent>() {
+        Callback<AttackEvent> callback1=new Callback<AttackEvent>(){
             @Override
             public void call(AttackEvent c) throws InterruptedException {
-                for(Integer integer: c.getAttack().getSerial()){
+                Attack attack=c.getAttack();
+                for(Integer integer: attack.getSerial()){
                    while(!ewoks.EwokIsAvailable(integer.intValue())){};//todo probably this will be dead-block
                    ewoks.EwokIsAcquire(integer.intValue());
                 }
-                Thread.currentThread().sleep(c.getAttack().getDuration());//Attacking in process
-                for(Integer integer: c.getAttack().getSerial()){
+                Thread.currentThread().sleep(attack.getDuration());//Attacking in process
+                for(Integer integer: attack.getSerial()){
                     ewoks.EwokIsRelease(integer.intValue());
                 }
                 complete(c,true);
