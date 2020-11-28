@@ -35,5 +35,8 @@ public class Ewok {
     public synchronized boolean isAvailable(){
         return available;
     }
+    /**
+     * getter where add
+     */
     public int getSerialNumber(){return serialNumber;}
 }

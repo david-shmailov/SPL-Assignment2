@@ -21,11 +21,16 @@ public class Ewoks {
             arrayOfEwok[i]=new Ewok(i); // create every single Ewok that needed at the program
         }
     }
-    //////getters
+    /**
+       getters
+     */
     public Ewok getEwok(int seiralnum){return arrayOfEwok[seiralnum];}
     public boolean EwokIsAvailable (int serialnum){return arrayOfEwok[serialnum].available; }
 
-    ///////setters
+
+    /**
+     setters
+     */
     public void EwokIsRelease(int serialnum){arrayOfEwok[serialnum].release();}
     public void EwokIsAcquire(int serialnum){arrayOfEwok[serialnum].acquire();}
 }
