@@ -3,7 +3,6 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.BombDestroyerEvent;
-import bgu.spl.mics.application.messages.DeactivationEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 
 /**
@@ -26,7 +25,6 @@ public class LandoMicroservice  extends MicroService {
         };
         this.subscribeEvent(BombDestroyerEvent.class,bombDestroyerEventCallback);
 
-        Callback<TerminateBroadcast> terminate= c -> terminate();
-        this.subscribeBroadcast(TerminateBroadcast.class,terminate);
+        this.subscribeBroadcast(TerminateBroadcast.class,c -> terminate());
     }
 }

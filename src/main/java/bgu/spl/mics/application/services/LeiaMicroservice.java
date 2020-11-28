@@ -30,7 +30,6 @@ public class LeiaMicroservice extends MicroService {
     	for (Attack attack : attacks){
     	    sendEvent(new AttackEvent(attack));
         }
-        Callback<TerminateBroadcast> terminateBroadcastCallback= c -> terminate();
-        this.subscribeBroadcast(TerminateBroadcast.class,terminateBroadcastCallback);
+        this.subscribeBroadcast(TerminateBroadcast.class,c -> terminate());
     }
 }
