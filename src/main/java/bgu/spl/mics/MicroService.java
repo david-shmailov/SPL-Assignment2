@@ -34,6 +34,8 @@ public abstract class MicroService implements Runnable {
      */
     public MicroService(String name) { //TODO we need to alter the signature to be able to accept a pointer to the message-bus instance. waiting for forum answer
         this.name=name;
+        bus=MessageBusImpl.getInstance();
+        actionTable=new HashMap<>();
     }
 
     /**

@@ -14,19 +14,31 @@ import java.util.Queue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBusImpl implements MessageBus {
+	private static MessageBusImpl bus=null;
 	                //TODO check if it necessary to write the "new HashMap" here or at constructor
 	private HashMap<String,Queue<Message>> MapOfMicroService= new HashMap<>();
 	private HashMap<Event,Future> MapOfFuture= new HashMap<>();
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents=new HashMap<>();
 	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast=new HashMap<>();
 
-	//public MessageBusImpl(){}; // constructor
+	private MessageBusImpl(){}// constructor
+
+
+	public static synchronized MessageBusImpl getInstance(){ //TODO check if this public method is allowed
+		if(bus==null) bus=new MessageBusImpl();
+		return bus;
+	}
+
+
 	
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-			Queue<MicroService> queue= new PriorityQueue<>();
-			MapOfEvents.put(type, queue);
+			if(!MapOfEvents.containsKey(type)){
+				Queue<MicroService> queue= new PriorityQueue<>();
+				MapOfEvents.put(type, queue);
+			}
+			MapOfEvents.get(type).add(m);
 		}
 		else System.out.println("need to register before subscribe");
 	}
@@ -34,8 +46,15 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-			Queue<MicroService> queue= new PriorityQueue<>();
-			MapOfBroadcast.put(type, queue);
+			if(!MapOfBroadcast.containsKey(type)) {
+
+				Queue<MicroService> queue = new PriorityQueue<>();
+				MapOfBroadcast.put(type,queue);
+
+			}
+			Queue<MicroService> queue =MapOfBroadcast.get(type);
+			queue.add(m);
+
 		}
 		else System.out.println("need to register before subscribe");
     }
@@ -49,7 +68,7 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		Queue<MicroService> queueOfBroadcast= MapOfBroadcast.get(b);
+		Queue<MicroService> queueOfBroadcast= MapOfBroadcast.get(b.getClass());
 		for (MicroService a :queueOfBroadcast ) {
 			MapOfMicroService.get(a.getName()).add(b);
 		}
@@ -58,7 +77,8 @@ public class MessageBusImpl implements MessageBus {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		Queue<MicroService> queueOfEvent= MapOfEvents.get(e);
+		Queue<MicroService> queueOfEvent= MapOfEvents.get(e.getClass());
+		System.out.println("i am here");
 		MicroService first= queueOfEvent.poll();               // round-robin implement
 		queueOfEvent.add(first);                               // round-robin implement
 		MapOfMicroService.get(first.getName()).add(e);
