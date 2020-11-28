@@ -4,6 +4,7 @@ package bgu.spl.mics;
 import jdk.internal.net.http.common.Pair;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -35,7 +36,7 @@ public class MessageBusImpl implements MessageBus {
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
 			if(!MapOfEvents.containsKey(type)){
-				Queue<MicroService> queue= new PriorityQueue<>();
+				Queue<MicroService> queue= new LinkedList<>();
 				MapOfEvents.put(type, queue);
 			}
 			MapOfEvents.get(type).add(m);
@@ -48,12 +49,11 @@ public class MessageBusImpl implements MessageBus {
 		if( MapOfMicroService.containsKey(m.getName())){
 			if(!MapOfBroadcast.containsKey(type)) {
 
-				Queue<MicroService> queue = new PriorityQueue<>();
+				Queue<MicroService> queue = new LinkedList<>();
 				MapOfBroadcast.put(type,queue);
-
 			}
-			Queue<MicroService> queue =MapOfBroadcast.get(type);
-			queue.add(m);
+			MapOfBroadcast.get(type).add(m);
+
 
 		}
 		else System.out.println("need to register before subscribe");
@@ -89,8 +89,8 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void register(MicroService m) {
-		Queue<Message> queue1= new PriorityQueue<Message>();
-		MapOfMicroService.put(m.getName(), queue1);
+		Queue<Message> queue= new LinkedList<>();
+		MapOfMicroService.put(m.getName(), queue);
 	}
 
 	@Override
