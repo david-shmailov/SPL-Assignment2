@@ -10,29 +10,30 @@ public class Ewok {
 	int serialNumber;
 	boolean available;
 
-	public Ewok (){
+	public Ewok (int serialNumber){
 	    available = true;
-	    serialNumber = 0; //TODO figure out how this shit works
+	    this.serialNumber = serialNumber;
     }
   
     /**
      * Acquires an Ewok
      */
-    public void acquire() {
-		
+    public synchronized void acquire() {
+        if(available)available=false;
     }
 
     /**
      * release an Ewok
      */
-    public void release() {
-    	
+    public void release() { //Todo check if its necessary to add synchronized
+        if(!available)available=true;
     }
 
     /**
      * query if the ewok is available
      */
-    public boolean isAvailable(){
+    public synchronized boolean isAvailable(){
         return available;
     }
+    public int getSerialNumber(){return serialNumber;}
 }
