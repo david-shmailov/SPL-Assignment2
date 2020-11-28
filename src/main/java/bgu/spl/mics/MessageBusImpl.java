@@ -5,7 +5,7 @@ import jdk.internal.net.http.common.Pair;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
+
 import java.util.Queue;
 
 
@@ -16,16 +16,20 @@ import java.util.Queue;
  */
 public class MessageBusImpl implements MessageBus {
 	private static MessageBusImpl bus=null;
-	                //TODO check if it necessary to write the "new HashMap" here or at constructor
-	private HashMap<String,Queue<Message>> MapOfMicroService= new HashMap<>();
-	private HashMap<Event,Future> MapOfFuture= new HashMap<>();
-	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents=new HashMap<>();
-	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast=new HashMap<>();
+	private HashMap<String,Queue<Message>> MapOfMicroService;
+	private HashMap<Event,Future> MapOfFuture;
+	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
+	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast;
 
-	private MessageBusImpl(){}// constructor
+	private MessageBusImpl() {// constructor
+		MapOfMicroService = new HashMap<>();
+		MapOfFuture = new HashMap<>();
+		MapOfEvents = new HashMap<>();
+		MapOfBroadcast = new HashMap<>();
+	}
 
 
-	public static synchronized MessageBusImpl getInstance(){ //TODO check if this public method is allowed
+	public static synchronized MessageBusImpl getInstance(){
 		if(bus==null) bus=new MessageBusImpl();
 		return bus;
 	}
@@ -78,7 +82,6 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
 		Queue<MicroService> queueOfEvent= MapOfEvents.get(e.getClass());
-		System.out.println("i am here");
 		MicroService first= queueOfEvent.poll();               // round-robin implement
 		queueOfEvent.add(first);                               // round-robin implement
 		MapOfMicroService.get(first.getName()).add(e);
@@ -101,6 +104,6 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {// TODO check where to throw exception
 		while(MapOfMicroService.get(m.getName()).isEmpty()){};// this call is blocking
-		return MapOfMicroService.get(m.getName()).peek();
+		return MapOfMicroService.get(m.getName()).poll();
 	}
 }
