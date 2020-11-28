@@ -5,8 +5,7 @@ import java.util.List;
 
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.MicroService;
-import bgu.spl.mics.application.messages.AttackEvent;
-import bgu.spl.mics.application.messages.TerminateBroadcast;
+import bgu.spl.mics.application.messages.*;
 import bgu.spl.mics.application.passiveObjects.Attack;
 import bgu.spl.mics.application.passiveObjects.Diary;
 
@@ -21,11 +20,13 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 public class LeiaMicroservice extends MicroService {
 	private Attack[] attacks;
 	private Diary diary;
+	private int counter;
 
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
 		this.attacks = attacks;
 		diary=Diary.getInstance();
+		counter = 0;
     }
 
     @Override
@@ -33,9 +34,18 @@ public class LeiaMicroservice extends MicroService {
     	for (Attack attack : attacks){
     	    sendEvent(new AttackEvent(attack));
         }
-        Callback<TerminateBroadcast> terminateBroadcastCallback= c -> {
-    	    diary.setLeiaTerminate();
-    	    terminate();};
-        this.subscribeBroadcast(TerminateBroadcast.class,terminateBroadcastCallback);
+    	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
+        //TODO double check what happens if this is sent before Han and C3Po register
+
+    	this.subscribeEvent(AttacksCompletedEvent.class,c -> {
+    	    counter++;
+            if (counter == 2) sendEvent(new DeactivationEvent());
+    	}); //once Leia was notified twice that attacks have been completed (both Han and C3PO transmitted they have finished) she can broadcast Deactivation
+
+
+        this.subscribeBroadcast(TerminateBroadcast.class,c -> {
+            diary.setLeiaTerminate();
+            terminate();
+        });
     }
 }

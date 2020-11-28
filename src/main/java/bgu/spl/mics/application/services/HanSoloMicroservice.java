@@ -4,6 +4,8 @@ package bgu.spl.mics.application.services;
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
+import bgu.spl.mics.application.messages.AttacksCompletedEvent;
+import bgu.spl.mics.application.messages.DoneSendingAttacksBroadcast;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Attack;
 import bgu.spl.mics.application.passiveObjects.Diary;
@@ -57,6 +59,11 @@ public class HanSoloMicroservice extends MicroService {
             }
         };
         this.subscribeBroadcast(TerminateBroadcast.class,callback2);
-
+        /*
+        When Han gets to the bottom of his message queue, he will find the DoneSendingAttacksBroadcast,
+        which means han can safely assume there are no more attacks that will need to be done by him, so he has finished
+        and can transmit AttacksCompleted to let lea know he finished his part.
+         */
+        this.subscribeBroadcast(DoneSendingAttacksBroadcast.class,c -> sendEvent(new AttacksCompletedEvent()));
     }
 }
