@@ -26,6 +26,7 @@ public abstract class MicroService implements Runnable {
     private String name;
     private MessageBus bus;
     private HashMap<Class<? extends Message>, Callback> actionTable;
+    private boolean active;
 
 
     /**
@@ -36,6 +37,7 @@ public abstract class MicroService implements Runnable {
         this.name=name;
         bus=MessageBusImpl.getInstance();
         actionTable=new HashMap<>();
+        active = true;
     }
 
     /**
@@ -139,7 +141,7 @@ public abstract class MicroService implements Runnable {
      * message.
      */
     protected final void terminate() {
-    	
+    	active = false;
     }
 
     /**
@@ -156,14 +158,11 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
-    	while(true){ //TODO change true to something more serious
+    	while(active){ //TODO change true to something more serious
     	    try {
                 Message m = bus.awaitMessage(this);
                 Callback action = actionTable.get(m);
-                action.call(m); //todo does callback receives the event as input or what??
-                if (m instanceof Event){
-                    complete((Event)m,null); //todo try to avoid this shit casting
-                }
+                action.call(m);
             }catch (IllegalStateException exp){
     	        break;//todo figure out what to do in this case. we want it to stop the whole program and throw an exception
             }catch (InterruptedException exp){
