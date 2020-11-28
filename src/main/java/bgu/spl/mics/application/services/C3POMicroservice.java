@@ -5,6 +5,7 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Attack;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 
@@ -18,6 +19,7 @@ import bgu.spl.mics.application.passiveObjects.Ewoks;
  */
 public class C3POMicroservice extends MicroService {
     private Ewoks ewoks;
+    private Diary diary;
 	
     public C3POMicroservice() {
         super("C3PO");
@@ -25,6 +27,7 @@ public class C3POMicroservice extends MicroService {
     public C3POMicroservice( Ewoks ewoks){
        super("C3PO");
        this.ewoks=ewoks;
+       diary=Diary.getInstance();
     }
 
 
@@ -44,13 +47,14 @@ public class C3POMicroservice extends MicroService {
                 }
                 complete(c,true);
                 c.setDone();
+                diary.addAttack();
             }
         };
         this.subscribeEvent(AttackEvent.class,callback1);
         Callback<TerminateBroadcast> callback2=new Callback<TerminateBroadcast>() {
             @Override
             public void call(TerminateBroadcast c) throws InterruptedException {
-                                  //todo add a call to Diary to take current time
+                   diary.setC3POTerminate();
                   terminate();
             }
         };

@@ -6,6 +6,7 @@ import bgu.spl.mics.MicroService;
 import bgu.spl.mics.application.messages.AttackEvent;
 import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Attack;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
 /**
@@ -18,6 +19,7 @@ import bgu.spl.mics.application.passiveObjects.Ewoks;
  */
 public class HanSoloMicroservice extends MicroService {
     private Ewoks ewoks;
+    private Diary diary;
 
     public HanSoloMicroservice() {
         super("Han");
@@ -25,6 +27,7 @@ public class HanSoloMicroservice extends MicroService {
     public HanSoloMicroservice(Ewoks ewoks){
         super("Han");
         this.ewoks=ewoks;
+        diary=Diary.getInstance();
     }
 
 
@@ -49,7 +52,7 @@ public class HanSoloMicroservice extends MicroService {
         Callback<TerminateBroadcast> callback2=new Callback<TerminateBroadcast>() {
             @Override
             public void call(TerminateBroadcast c) throws InterruptedException {
-                //todo add a call to Diary to take current time
+                diary.setHanSoloTerminate();
                 terminate();
             }
         };

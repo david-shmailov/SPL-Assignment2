@@ -1,5 +1,6 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.application.passiveObjects.Diary;
 import jdk.vm.ci.code.site.Call;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public abstract class MicroService implements Runnable {
     private MessageBus bus;
     private HashMap<Class<? extends Message>, Callback> actionTable;
     private boolean active;
+
 
 
     /**

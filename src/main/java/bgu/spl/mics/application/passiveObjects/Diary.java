@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Do not add to this class nothing but a single constructor, getters and setters.
  */
 public class Diary {
+    private static Diary diary=null;
     private AtomicInteger totalAttacks=new AtomicInteger(0);
     private long HanSoloFinish;
     private long C3POFinish ;
@@ -26,22 +27,26 @@ public class Diary {
      * constructor
      * @param
      */
-    public Diary(){}
+    private Diary(){}
+    public static synchronized Diary getInstance(){
+        if (diary==null) diary=new Diary();
+        return diary;
+    }
 
     /**
      * setters
      */
     public synchronized void addAttack(){totalAttacks.set(totalAttacks.get()+1);}
-    public void setTerminate(C3POMicroservice c){C3POTerminate=System.currentTimeMillis();}
-    public void setTerminate(HanSoloMicroservice c){HanSoloTerminate=System.currentTimeMillis();}
-    public void setTerminate(LandoMicroservice c){LandoTerminate=System.currentTimeMillis();}
-    public void setTerminate(LeiaMicroservice c){LeiaTerminate=System.currentTimeMillis();}
-    public void setTerminate(R2D2Microservice c){R2D2Terminate=System.currentTimeMillis();}
+    public void setC3POTerminate(){C3POTerminate=System.currentTimeMillis();}
+    public void setHanSoloTerminate(){HanSoloTerminate=System.currentTimeMillis();}
+    public void setLandoTerminate(){LandoTerminate=System.currentTimeMillis();}
+    public void setLeiaTerminate(){LeiaTerminate=System.currentTimeMillis();}
+    public void setR2D2Terminate(){R2D2Terminate=System.currentTimeMillis();}
 
-    public void setFinish(HanSoloMicroservice c){HanSoloFinish=System.currentTimeMillis();}
-    public void setFinish(C3POMicroservice c){C3POFinish=System.currentTimeMillis();}
+    public void setHanSoloFinish(){HanSoloFinish=System.currentTimeMillis();}
+    public void setC3POFinish(){C3POFinish=System.currentTimeMillis();}
 
-    public void setDeactivate(R2D2Microservice c){R2D2Deactivate=System.currentTimeMillis();}
+    public void setDeactivate(){R2D2Deactivate=System.currentTimeMillis();}
 
 
     /**
