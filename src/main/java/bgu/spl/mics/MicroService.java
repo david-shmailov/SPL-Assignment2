@@ -171,6 +171,7 @@ public abstract class MicroService implements Runnable {
     	        break;
             }
         }
+            //todo add a call to Diary to take current time
     }
 
 }

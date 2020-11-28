@@ -32,7 +32,7 @@ class MessageBusImplTest {
     void subscribeBroadcast() {// we check it twice on sendBroadcast test.
     }
 
-    /*
+    /**
     This test is meant to test the complete function. it also tests the register functions.
     the test registers 2 microservices, subscribes m2 to an AttackEvent, makes m1 send the event,
     and then tests that m2 completed it, indicating it received the event properly.
@@ -58,7 +58,7 @@ class MessageBusImplTest {
         }
 
     }
-    /*
+    /**
     This test is meant to test the sendBroadCast function.
     it initializes 3 microservices and one simple default anonymous broadcast message.
     it registers all 3 microservices, that way also tests the register function.
@@ -99,7 +99,7 @@ class MessageBusImplTest {
         assertTrue(e2.equals(bor));
     }
 
-    /*
+    /**
     this test also tests subscribeEvent, register and awaitMessage functions.
      */
     @Test
@@ -124,7 +124,7 @@ class MessageBusImplTest {
 
           assertTrue(e.equals(e2));
      }
-    /*
+    /**
     the following 3 functions have been tested in previous tests.
      */
     @Test

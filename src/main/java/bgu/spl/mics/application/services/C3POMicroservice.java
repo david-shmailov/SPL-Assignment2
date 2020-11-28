@@ -17,15 +17,13 @@ import bgu.spl.mics.application.passiveObjects.Ewoks;
  * You MAY change constructor signatures and even add new public constructors.
  */
 public class C3POMicroservice extends MicroService {
-    private Attack attack;
     private Ewoks ewoks;
 	
     public C3POMicroservice() {
         super("C3PO");
-    }
-    public C3POMicroservice(Attack attack, Ewoks ewoks){
+    }//for Test
+    public C3POMicroservice( Ewoks ewoks){
        super("C3PO");
-       this.attack=attack;
        this.ewoks=ewoks;
     }
 
@@ -35,12 +33,12 @@ public class C3POMicroservice extends MicroService {
         Callback<AttackEvent> callback1=new Callback<AttackEvent>() {
             @Override
             public void call(AttackEvent c) throws InterruptedException {
-                for(Integer integer: attack.getSerial()){
-                   while(!ewoks.EwokIsAvailable(integer.intValue())){};//todo probably this will block
+                for(Integer integer: c.getAttack().getSerial()){
+                   while(!ewoks.EwokIsAvailable(integer.intValue())){};//todo probably this will be dead-block
                    ewoks.EwokIsAcquire(integer.intValue());
                 }
-                Thread.currentThread().sleep(attack.getDuration());//Attacking in process
-                for(Integer integer: attack.getSerial()){
+                Thread.currentThread().sleep(c.getAttack().getDuration());//Attacking in process
+                for(Integer integer: c.getAttack().getSerial()){
                     ewoks.EwokIsRelease(integer.intValue());
                 }
                 complete(c,true);
