@@ -43,6 +43,7 @@ public class C3POMicroservice extends MicroService {
                     ewoks.EwokIsRelease(integer.intValue());
                 }
                 complete(c,true);
+                c.setDone();
             }
         };
         this.subscribeEvent(AttackEvent.class,callback1);

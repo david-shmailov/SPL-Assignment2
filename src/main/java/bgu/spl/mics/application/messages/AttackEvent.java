@@ -22,6 +22,12 @@ public class AttackEvent implements Event<Boolean> {
      */
     public Attack getAttack(){ return attack;}
 
+    /**
+     * setters
+     */
+     public void setDone(){
+         done=true;
+     }
 
 
 }
