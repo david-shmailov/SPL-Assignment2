@@ -3,7 +3,10 @@ package bgu.spl.mics.application.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import bgu.spl.mics.Callback;
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.messages.AttackEvent;
+import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Attack;
 
 /**
@@ -24,6 +27,10 @@ public class LeiaMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
-    	
+    	for (Attack attack : attacks){
+    	    sendEvent(new AttackEvent(attack));
+        }
+        Callback<TerminateBroadcast> terminateBroadcastCallback= c -> terminate();
+        this.subscribeBroadcast(TerminateBroadcast.class,terminateBroadcastCallback);
     }
 }
