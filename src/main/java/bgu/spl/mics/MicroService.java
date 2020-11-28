@@ -38,6 +38,7 @@ public abstract class MicroService implements Runnable {
         bus=MessageBusImpl.getInstance();
         actionTable=new HashMap<>();
         active = true;
+        bus.register(this);
     }
 
     /**
@@ -158,6 +159,7 @@ public abstract class MicroService implements Runnable {
      */
     @Override
     public final void run() {
+        this.initialize();
     	while(active){ //TODO change true to something more serious
     	    try {
                 Message m = bus.awaitMessage(this);
