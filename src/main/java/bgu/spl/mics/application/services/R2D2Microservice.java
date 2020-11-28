@@ -23,21 +23,13 @@ public class R2D2Microservice extends MicroService {
 
     @Override
     protected void initialize() {
-        Callback<DeactivationEvent> shnatz = new Callback<DeactivationEvent>() {
-            @Override
-            public void call(DeactivationEvent c) throws InterruptedException {
-                Thread.currentThread().sleep(duration);
-                complete(c,true);
-            }
+        Callback<DeactivationEvent> deactivationEventCallback = c -> {
+            Thread.currentThread().sleep(duration);
+            complete(c,true);
         };
-        this.subscribeEvent(DeactivationEvent.class,shnatz);
+        this.subscribeEvent(DeactivationEvent.class,deactivationEventCallback);
 
-        Callback<TerminateBroadcast> terminate= new Callback<TerminateBroadcast>() {
-            @Override
-            public void call(TerminateBroadcast c) throws InterruptedException {
-                terminate();
-            }
-        };
-        this.subscribeBroadcast(TerminateBroadcast.class,terminate);
+        Callback<TerminateBroadcast> terminateBroadcastCallback= c -> terminate();
+        this.subscribeBroadcast(TerminateBroadcast.class,terminateBroadcastCallback);
     }
 }
