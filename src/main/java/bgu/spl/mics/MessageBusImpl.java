@@ -15,7 +15,7 @@ import java.util.Queue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBusImpl implements MessageBus {
-	private static MessageBusImpl bus=null;
+	private static volatile MessageBusImpl bus=null; //Todo check if need volatile or synchronized in constructor
 	private HashMap<String,Queue<Message>> MapOfMicroService;
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
@@ -39,7 +39,7 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-			if(!MapOfEvents.containsKey(type)){
+			if(!MapOfEvents.containsKey(type)){//TODO add maybe synchronized
 				Queue<MicroService> queue= new LinkedList<>();
 				MapOfEvents.put(type, queue);
 			}
@@ -51,8 +51,7 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-			if(!MapOfBroadcast.containsKey(type)) {
-
+			if(!MapOfBroadcast.containsKey(type)) { //TODO add maybe synchronized
 				Queue<MicroService> queue = new LinkedList<>();
 				MapOfBroadcast.put(type,queue);
 			}
@@ -103,7 +102,7 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {// TODO check where to throw exception
-		while(MapOfMicroService.get(m.getName()).isEmpty()){};// this call is blocking
+		while (MapOfMicroService.get(m.getName()).isEmpty()){wait();};// this call is blocking
 		return MapOfMicroService.get(m.getName()).poll();
 	}
 }

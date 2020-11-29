@@ -14,7 +14,7 @@ import java.nio.file.Paths;
  */
 public class Main {
 	public static void main(String[] args) {
-		try {
+		try { /** here we are reading the input file, its save now at user and attaks inf in usr2[]    */
 			Gson gson = new Gson();
 			Reader reader = Files.newBufferedReader(Paths.get("input.json"));
 			User user = gson.fromJson(reader,User.class);
