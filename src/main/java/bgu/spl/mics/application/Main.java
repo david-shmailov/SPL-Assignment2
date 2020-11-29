@@ -1,10 +1,14 @@
 package bgu.spl.mics.application;
 
+import bgu.spl.mics.User;
+import bgu.spl.mics.application.services.C3POMicroservice;
+import bgu.spl.mics.application.services.LandoMicroservice;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -18,11 +22,9 @@ public class Main {
 		try {
 			Gson gson = new Gson();
 			Reader reader = Files.newBufferedReader(Paths.get("input.json"));
-			Map<?, ?> map = gson.fromJson(reader, Map.class);
-
-			System.out.println(map.get("R2D2"));
-			System.out.println(map.get("Lando"));
-
+			User user = gson.fromJson(reader,User.class);
+			System.out.println(user.Ewoks);
+			System.out.println(user.attacks[0].get("duration"));
 
 
 			reader.close();
