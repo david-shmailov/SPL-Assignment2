@@ -47,7 +47,7 @@ public class HanSoloMicroservice extends MicroService {
                 for(Integer integer: attack.getSerial()){
                     ewoks.EwokIsRelease(integer.intValue());
                 }
-                notifyAll();
+                notifyAll();    //so C3P0 come out from wait
                 complete(c,true);
                 c.setDone();
                 diary.addAttack();

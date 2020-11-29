@@ -29,7 +29,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 
-	public static synchronized MessageBusImpl getInstance(){
+	public static synchronized MessageBusImpl getInstance(){ //Todo check if need volatile or synchronized in constructor
 		if(bus==null) bus=new MessageBusImpl();
 		return bus;
 	}
