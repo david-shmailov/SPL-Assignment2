@@ -14,15 +14,20 @@ import java.nio.file.Paths;
  */
 public class Main {
 	public static void main(String[] args) {
-		try { /** here we are reading the input file, its save now at user and attaks inf in usr2[]    */
+		try { /** here we are reading the input file, its save now at user and attacks inf in usr2[]    */
 			Gson gson = new Gson();
-			Reader reader = Files.newBufferedReader(Paths.get("input.json"));
+			Reader reader = Files.newBufferedReader(Paths.get(args[0]));
 			User user = gson.fromJson(reader,User.class);
 			User2 user2[] = new User2[user.attacks.length];
 			for(int i=0; i<user.attacks.length;i++)
 			user2[i]=gson.fromJson(user.attacks[i],User2.class);
 			reader.close();
 		}catch (Exception e){ e.printStackTrace();};
+
+		/**
+		 * david to use any thing form the inpust file you need to write user.
+		 * or to get the attacks info use tje user2[]. every one is attack
+		 * */
 
 
 
