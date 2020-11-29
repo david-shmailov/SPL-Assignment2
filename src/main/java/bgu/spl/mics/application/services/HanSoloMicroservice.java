@@ -64,6 +64,9 @@ public class HanSoloMicroservice extends MicroService {
         which means han can safely assume there are no more attacks that will need to be done by him, so he has finished
         and can transmit AttacksCompleted to let lea know he finished his part.
          */
-        this.subscribeBroadcast(DoneSendingAttacksBroadcast.class,c -> sendEvent(new AttacksCompletedEvent()));
+        this.subscribeBroadcast(DoneSendingAttacksBroadcast.class,c -> {
+            diary.setHanSoloFinish();
+            sendEvent(new AttacksCompletedEvent());
+        });
     }
 }
