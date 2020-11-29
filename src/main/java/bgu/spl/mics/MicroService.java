@@ -1,7 +1,5 @@
 package bgu.spl.mics;
 
-import bgu.spl.mics.application.passiveObjects.Diary;
-import jdk.vm.ci.code.site.Call;
 
 import java.util.HashMap;
 
