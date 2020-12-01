@@ -2,8 +2,12 @@ package bgu.spl.mics.application;
 
 import bgu.spl.mics.User;
 import bgu.spl.mics.User2;
+import bgu.spl.mics.application.passiveObjects.Diary;
 import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -23,6 +27,7 @@ public class Main {
 			user2[i]=gson.fromJson(user.attacks[i],User2.class);
 			reader.close();
 		}catch (Exception e){ e.printStackTrace();};
+		Diary diary=Diary.getInstance();
 
 		/**
 		 * david to use any thing form the inpust file you need to write user.
@@ -30,6 +35,29 @@ public class Main {
 		 * */
 
 
+
+
+
+
+
+
+
+		/**
+		 * out put file
+		 */
+		try {
+			Gson gson=new Gson();
+			Writer writer = Files.newBufferedWriter(Paths.get(args[1]));
+			writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");
+			writer.write("HanSolo and C3PO finish their tasks ~"
+					+Math.abs(diary.getC3POFinish()-diary.getHanSoloFinish())+
+					" milliseconds one after the other.\n");
+			writer.write("All threads terminate ~"+diary.Terminate()+" milliseconds later\n");
+			writer.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 
 	}

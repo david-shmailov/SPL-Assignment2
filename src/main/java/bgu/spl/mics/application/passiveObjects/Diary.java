@@ -61,5 +61,12 @@ public class Diary {
     public long getC3POTerminate(){return C3POTerminate;}
     public long getR2D2Terminate(){return R2D2Terminate;}
     public long getLandoTerminate(){return LandoTerminate;}
+    public long Terminate(){
+        long max=Math.max(Math.max(Math.max(Math.max(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
+                LandoTerminate);
+        long min=Math.min(Math.min(Math.min(Math.min(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
+                LandoTerminate);
+        return max-min;
+    }
 
 }
