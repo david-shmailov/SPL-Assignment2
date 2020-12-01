@@ -55,6 +55,7 @@ public class Diary {
     public int getTotalAttacks(){return totalAttacks.get();}
     public long getHanSoloFinish(){return HanSoloFinish;}
     public long getC3POFinish(){return C3POFinish;}
+    public long Finish(){return Math.abs(HanSoloFinish-C3POFinish);}
     public long getR2D2Deactivate(){return R2D2Deactivate;}
     public long getLeiaTerminate(){return LeiaTerminate;}
     public long getHanSoloTerminate(){return HanSoloTerminate;}

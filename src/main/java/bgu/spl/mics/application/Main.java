@@ -18,7 +18,10 @@ import java.nio.file.Paths;
  */
 public class Main {
 	public static void main(String[] args) {
-		try { /** here we are reading the input file, its save now at user and attacks inf in usr2[]    */
+		/**
+		 * read input file to user1 and user2[]
+		 */
+		try {
 			Gson gson = new Gson();
 			Reader reader = Files.newBufferedReader(Paths.get(args[0]));
 			User user = gson.fromJson(reader,User.class);
@@ -43,14 +46,14 @@ public class Main {
 
 
 		/**
-		 * out put file
+		 * write to out-put file
 		 */
 		try {
 			Gson gson=new Gson();
 			Writer writer = Files.newBufferedWriter(Paths.get(args[1]));
 			writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");
 			writer.write("HanSolo and C3PO finish their tasks ~"
-					+Math.abs(diary.getC3POFinish()-diary.getHanSoloFinish())+
+					+diary.Finish()+
 					" milliseconds one after the other.\n");
 			writer.write("All threads terminate ~"+diary.Terminate()+" milliseconds later\n");
 			writer.close();
