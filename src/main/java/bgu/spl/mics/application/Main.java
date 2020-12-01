@@ -30,7 +30,7 @@ public class Main {
 		Diary diary=Diary.getInstance();
 
 		/**
-		 * david to use any thing form the inpust file you need to write user.
+		 * david to use any thing form the input file you need to write user.
 		 * or to get the attacks info use tje user2[]. every one is attack
 		 * */
 
