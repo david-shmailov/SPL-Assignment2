@@ -19,10 +19,9 @@ public class Ewok {
     /**
      * Acquires an Ewok
      */
-    public synchronized void acquire() {
-        try {
+    public synchronized void acquire() throws InterruptedException {
             while (!available){lock.wait();}
-        }catch (InterruptedException e){}
+
             available=false;
     }
 

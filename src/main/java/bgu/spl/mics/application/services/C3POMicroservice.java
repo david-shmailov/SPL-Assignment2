@@ -40,14 +40,14 @@ public class C3POMicroservice extends MicroService {
             public void call(AttackEvent c) throws InterruptedException {
                 Attack attack=c.getAttack();
                 for(Integer integer: attack.getSerial()){
-                   while(!ewoks.EwokIsAvailable(integer.intValue())){wait();};//todo probably this will be dead-block
+              //     while(!ewoks.EwokIsAvailable(integer.intValue())){wait();};//todo probably this will be dead-block
                    ewoks.EwokIsAcquire(integer.intValue());
                 }
                 Thread.currentThread().sleep(attack.getDuration());//Attacking in process
                 for(Integer integer: attack.getSerial()){
                     ewoks.EwokIsRelease(integer.intValue());
                 }
-                notifyAll(); //so HanSolo come out from wait
+               // notifyAll(); //so HanSolo come out from wait
                 complete(c,true);
                 c.setDone();
                 diary.addAttack();
