@@ -68,4 +68,23 @@ public class Diary {
         return max-min;
     }
 
+    /**
+     * to string
+     * @return
+     */
+
+    @Override
+    public String toString() {
+        return "{\n" +
+                "\"totalAttacks\":  " + totalAttacks +",\n"+
+                "\"HanSoloFinish\":  " + HanSoloFinish +",\n"+
+                "\"C3POFinish\":  " + C3POFinish +",\n"+
+                "\"R2D2Deactivate\":  " + R2D2Deactivate +",\n"+
+                "\"LeiaTerminate\":  "+ LeiaTerminate +",\n"+
+                "\"HanSoloTerminate\":  " + HanSoloTerminate +",\n"+
+                "\"C3POTerminate\":  " + C3POTerminate +",\n"+
+                "\"R2D2Terminate\":  " + R2D2Terminate +",\n"+
+                "\"LandoTerminate\":  " + LandoTerminate +"\n"+
+                '}';
+    }
 }

@@ -51,12 +51,15 @@ public class Main {
 		try {
 			Gson gson=new Gson();
 			Writer writer = Files.newBufferedWriter(Paths.get(args[1]));
-			writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");
-			writer.write("HanSolo and C3PO finish their tasks ~"
-					+diary.Finish()+
-					" milliseconds one after the other.\n");
-			writer.write("All threads terminate ~"+diary.Terminate()+" milliseconds later\n");
-			//gson.toJson(writer,Diary.class);
+				/**
+					writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");
+					writer.write("HanSolo and C3PO finish their tasks ~"
+							+diary.Finish()+
+							" milliseconds one after the other.\n");
+					writer.write("All threads  terminate ~"+diary.Terminate()+" milliseconds later\n");
+				 */
+
+			writer.write(diary.toString());
 			writer.close();
 
 		} catch (IOException e) {
