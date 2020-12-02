@@ -25,7 +25,7 @@ public class Ewoks {
        getters
      */
     public Ewok getEwok(int seiralnum){return arrayOfEwok[seiralnum];}
-    public boolean EwokIsAvailable (int serialnum){return arrayOfEwok[serialnum].available; }
+    public boolean EwokIsAvailable (int serialnum){return arrayOfEwok[serialnum].isAvailable(); }
 
 
     /**

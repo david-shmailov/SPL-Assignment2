@@ -7,8 +7,9 @@ package bgu.spl.mics.application.passiveObjects;
  * You may add fields and methods to this class as you see fit (including public methods).
  */
 public class Ewok {
-	int serialNumber;
-	boolean available;
+	private int serialNumber;
+	private boolean available;
+	private Object lock=new Object();
 
 	public Ewok (int serialNumber){
 	    available = true;
@@ -19,14 +20,21 @@ public class Ewok {
      * Acquires an Ewok
      */
     public synchronized void acquire() {
-        if(available)available=false;
+        try {
+            while (!available){lock.wait();}
+        }catch (InterruptedException e){}
+            available=false;
     }
 
     /**
      * release an Ewok
      */
     public void release() { //Todo check if its necessary to add synchronized
-        if(!available)available=true;
+        if(!available) {
+            available = true;
+            lock.notifyAll();
+        }
+
     }
 
     /**
