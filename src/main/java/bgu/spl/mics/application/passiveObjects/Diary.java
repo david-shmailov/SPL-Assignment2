@@ -1,7 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
 
-import bgu.spl.mics.application.services.*;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -65,8 +64,7 @@ public class Diary {
     public long Terminate(){
         long max=Math.max(Math.max(Math.max(Math.max(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
                 LandoTerminate);
-        long min=Math.min(Math.min(Math.min(Math.min(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
-                LandoTerminate);
+        long min=Math.min(HanSoloFinish,C3POFinish);
         return max-min;
     }
 
