@@ -56,6 +56,7 @@ public class Main {
 					+diary.Finish()+
 					" milliseconds one after the other.\n");
 			writer.write("All threads terminate ~"+diary.Terminate()+" milliseconds later\n");
+			//gson.toJson(writer,Diary.class);
 			writer.close();
 
 		} catch (IOException e) {
