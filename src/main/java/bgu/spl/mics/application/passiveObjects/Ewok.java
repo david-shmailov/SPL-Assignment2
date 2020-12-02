@@ -21,7 +21,6 @@ public class Ewok {
      */
     public synchronized void acquire() throws InterruptedException {
             while (!available){lock.wait();}
-
             available=false;
     }
 

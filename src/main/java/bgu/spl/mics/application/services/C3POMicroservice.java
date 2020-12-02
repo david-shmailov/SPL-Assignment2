@@ -41,11 +41,11 @@ public class C3POMicroservice extends MicroService {
                 Attack attack=c.getAttack();
                 for(Integer integer: attack.getSerial()){
               //     while(!ewoks.EwokIsAvailable(integer.intValue())){wait();};//todo probably this will be dead-block
-                   ewoks.EwokIsAcquire(integer.intValue());
+                   ewoks.EwokIsAcquire(integer.intValue());//this method is blocking
                 }
                 Thread.currentThread().sleep(attack.getDuration());//Attacking in process
                 for(Integer integer: attack.getSerial()){
-                    ewoks.EwokIsRelease(integer.intValue());
+                    ewoks.EwokIsRelease(integer.intValue());//this method notify the other service that need this ewok
                 }
                // notifyAll(); //so HanSolo come out from wait
                 complete(c,true);
@@ -63,7 +63,7 @@ public class C3POMicroservice extends MicroService {
         };
         this.subscribeBroadcast(TerminateBroadcast.class,callback2);
 
-        /*
+        /**
         When C3PO gets to the bottom of his message queue, he will find the DoneSendingAttacksBroadcast,
         which means C3PO can safely assume there are no more attacks that will need to be done by him, so he has finished
         and can transmit AttacksCompleted to let lea know he finished his part.

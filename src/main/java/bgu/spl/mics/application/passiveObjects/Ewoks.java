@@ -32,5 +32,6 @@ public class Ewoks {
      setters
      */
     public void EwokIsRelease(int serialnum){arrayOfEwok[serialnum].release();}
-    public void EwokIsAcquire(int serialnum){arrayOfEwok[serialnum].acquire();}
+    public void EwokIsAcquire(int serialnum) throws InterruptedException {arrayOfEwok[serialnum].acquire();}
+    //this method is blocking
 }
