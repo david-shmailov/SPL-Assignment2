@@ -19,13 +19,18 @@ class EwokTest {
 
     @Test
     void acquire() {
-        ewok.acquire();
+        try {
+            ewok.acquire();
+        }catch (InterruptedException e){}
         assertFalse(ewok.isAvailable());
     }
 
     @Test
     void release() {
-        ewok.acquire();
+        try {
+            ewok.acquire();
+        }catch (InterruptedException e){}
+
         ewok.release();
         assertTrue(ewok.isAvailable());
     }
@@ -33,7 +38,9 @@ class EwokTest {
     @Test
     void isAvailable() {
         assertTrue(ewok.isAvailable());
-        ewok.acquire();
+        try {
+            ewok.acquire();
+        }catch (InterruptedException e){}
         assertFalse(ewok.isAvailable());
         ewok.release();
         assertTrue(ewok.isAvailable());
