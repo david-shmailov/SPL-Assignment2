@@ -10,7 +10,7 @@ import java.util.List;
  * Do not add any additional members/method to this class (except for getters).
  */
 public class Attack {
-   private final List<Integer> serials;
+    private final List<Integer> serials;
     private final int duration;
 
     /**
