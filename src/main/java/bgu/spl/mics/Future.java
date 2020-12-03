@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class Future<T> {
 	private boolean isDone;
     private T result;
-	
+    private boolean waiting=false;
+
 	/**
 	 * This should be the the only public constructor in this class.
 	 */
@@ -30,8 +31,8 @@ public class Future<T> {
      * @return return the result of type T if it is available, if not wait until it is available.
      * 	       
      */
-	public T get() throws InterruptedException {
-		while(!isDone){wait();};// blocking, busy-work
+	public T get() throws InterruptedException { //todo check the throws allowed
+		while(!isDone){waiting=true;wait();waiting=false;};// blocking, busy-work
         return result;
 	}
 	
@@ -41,7 +42,7 @@ public class Future<T> {
 	public void resolve (T result) {
 		this.result=result;
 		isDone=true;
-		notifyAll();
+		if(waiting)notifyAll();
 	}
 	
 	/**

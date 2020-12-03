@@ -15,7 +15,7 @@ import java.util.Queue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBusImpl implements MessageBus {
-	private static volatile MessageBusImpl bus=null; //Todo check if need volatile or synchronized in constructor
+	private static MessageBusImpl bus=null;
 	private HashMap<String,Queue<Message>> MapOfMicroService;
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
@@ -29,7 +29,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 
-	public static synchronized MessageBusImpl getInstance(){ //Todo check if need volatile or synchronized in constructor
+	public static synchronized MessageBusImpl getInstance(){
 		if(bus==null) bus=new MessageBusImpl();
 		return bus;
 	}
