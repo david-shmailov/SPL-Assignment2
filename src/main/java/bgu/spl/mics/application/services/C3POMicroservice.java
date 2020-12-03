@@ -10,6 +10,8 @@ import bgu.spl.mics.application.passiveObjects.Attack;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
 
+import java.util.concurrent.CountDownLatch;
+
 
 /**
  * C3POMicroservices is in charge of the handling {@link AttackEvent}.
@@ -22,14 +24,16 @@ import bgu.spl.mics.application.passiveObjects.Ewoks;
 public class C3POMicroservice extends MicroService {
     private Ewoks ewoks;
     private Diary diary;
+    CountDownLatch latch;
 	
     public C3POMicroservice() {
         super("C3PO");
     }//for Test
-    public C3POMicroservice( Ewoks ewoks){
+    public C3POMicroservice( Ewoks ewoks, CountDownLatch latch){
        super("C3PO");
        this.ewoks=ewoks;
        diary=Diary.getInstance();
+       this.latch=latch;
     }
 
 
@@ -71,9 +75,8 @@ public class C3POMicroservice extends MicroService {
         this.subscribeBroadcast(DoneSendingAttacksBroadcast.class, c -> {
             diary.setC3POFinish();
             sendEvent(new AttacksCompletedEvent());
-            notifyAll();
         });
-
+        latch.countDown();
 
     }
 }

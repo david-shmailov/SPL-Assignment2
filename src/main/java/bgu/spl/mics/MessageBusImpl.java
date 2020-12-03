@@ -20,6 +20,8 @@ public class MessageBusImpl implements MessageBus {
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
 	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast;
+	private Object lock=new Object();
+
 
 	private MessageBusImpl() {// constructor
 		MapOfMicroService = new HashMap<>();
@@ -37,7 +39,7 @@ public class MessageBusImpl implements MessageBus {
 
 	
 	@Override
-	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
+	public synchronized  <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
 
 			if(!MapOfEvents.containsKey(type)){//TODO add maybe synchronized
@@ -50,7 +52,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
+	public synchronized void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
 			if(!MapOfBroadcast.containsKey(type)) { //TODO add maybe synchronized
 				Queue<MicroService> queue = new LinkedList<>();
@@ -76,6 +78,10 @@ public class MessageBusImpl implements MessageBus {
 		for (MicroService a :queueOfBroadcast ) {
 			MapOfMicroService.get(a.getName()).add(b);
 		}
+		synchronized(lock)
+		{
+			lock.notifyAll();
+		}
 	}
 
 	
@@ -87,6 +93,10 @@ public class MessageBusImpl implements MessageBus {
 		MapOfMicroService.get(first.getName()).add(e);
 		Future<T> result=new Future<>();
 		MapOfFuture.put(e, result);
+		synchronized(lock)
+		{
+			lock.notifyAll();
+		}
         return result;
 	}
 
@@ -103,7 +113,12 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {
-		while (MapOfMicroService.get(m.getName()).isEmpty()){wait();};// this call is blocking
-		return MapOfMicroService.get(m.getName()).poll();
+		synchronized (lock) {
+			while (MapOfMicroService.get(m.getName()).isEmpty()) {
+				lock.wait();
+			}
+			;// this call is blocking
+			return MapOfMicroService.get(m.getName()).poll();
+		}
 	}
 }

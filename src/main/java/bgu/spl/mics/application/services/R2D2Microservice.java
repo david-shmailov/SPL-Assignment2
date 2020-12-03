@@ -32,7 +32,6 @@ public class R2D2Microservice extends MicroService {
             complete(c,true);
             diary.setDeactivate();
             sendEvent(new BombDestroyerEvent());
-            notifyAll();
         };
         this.subscribeEvent(DeactivationEvent.class,deactivationEventCallback);
 

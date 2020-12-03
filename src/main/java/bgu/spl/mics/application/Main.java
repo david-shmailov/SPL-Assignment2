@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.CountDownLatch;
 
 
 /** This is the Main class of the application. You should parse the input file,
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
  * In the end, you should output a JSON.
  */
 public class Main {
+	static final CountDownLatch latch = new CountDownLatch(2);
 	public static void main(String[] args) {
 		/**
 		 * read input file to user1 and user2[]
@@ -41,10 +43,11 @@ public class Main {
 
 			//Main logic
 			//init objects
+
 			Diary diary=Diary.getInstance();
 			Ewoks ewokHome = new Ewoks(user.Ewoks);
-			HanSoloMicroservice Han = new HanSoloMicroservice(ewokHome);
-			C3POMicroservice C3PO = new C3POMicroservice(ewokHome);
+			HanSoloMicroservice Han = new HanSoloMicroservice(ewokHome,latch);
+			C3POMicroservice C3PO = new C3POMicroservice(ewokHome,latch);
 			LeiaMicroservice Leia = new LeiaMicroservice(attacks);
 			LandoMicroservice Lando = new LandoMicroservice(user.Lando);
 			R2D2Microservice R2D2 = new R2D2Microservice(user.R2D2);
@@ -58,20 +61,17 @@ public class Main {
 			//start the party
 			han.start();
 			c3po.start();
-			leia.start();
+			latch.await();
 			lando.start();
 			r2d2.start();
+			leia.start();
 			//wait for all of them to finish
 			han.join();
 			c3po.join();
-			leia.join();
 			lando.join();
 			r2d2.join();
+			leia.join();
 
-
-
-
-			gson=new Gson();
 			Writer writer = Files.newBufferedWriter(Paths.get(args[1]));
 			/**
 			 writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");

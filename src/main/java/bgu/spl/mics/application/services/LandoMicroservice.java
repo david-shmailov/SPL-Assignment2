@@ -26,7 +26,6 @@ public class LandoMicroservice  extends MicroService {
             Thread.currentThread().sleep(duration);
             complete(c,true);
             sendBroadcast(new TerminateBroadcast());
-            notifyAll();
 
         };
         this.subscribeEvent(BombDestroyerEvent.class,bombDestroyerEventCallback);

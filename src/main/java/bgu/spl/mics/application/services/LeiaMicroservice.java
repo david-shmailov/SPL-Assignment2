@@ -31,18 +31,21 @@ public class LeiaMicroservice extends MicroService {
 
     @Override
     protected void initialize() {
+        try{
+            Thread.sleep(1000);
+        }catch (InterruptedException e){}
     	for (Attack attack : attacks){
     	    sendEvent(new AttackEvent(attack));
         }
     	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
-        notifyAll();
+
         //TODO double check what happens if this is sent before Han and C3Po register (should not happen since MS are registered when constructed)
 
     	this.subscribeEvent(AttacksCompletedEvent.class,c -> {
     	    counter++;
             if (counter == 2) {
                 sendEvent(new DeactivationEvent());
-                notifyAll();
+
             }
     	}); //once Leia was notified twice that attacks have been completed (both Han and C3PO transmitted they have finished) she can broadcast Deactivation
 
