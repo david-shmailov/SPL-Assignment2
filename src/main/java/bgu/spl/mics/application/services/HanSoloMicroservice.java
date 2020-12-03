@@ -62,7 +62,7 @@ public class HanSoloMicroservice extends MicroService {
             }
         };
         this.subscribeBroadcast(TerminateBroadcast.class,callback2);
-        /*
+        /**
         When Han gets to the bottom of his message queue, he will find the DoneSendingAttacksBroadcast,
         which means han can safely assume there are no more attacks that will need to be done by him, so he has finished
         and can transmit AttacksCompleted to let lea know he finished his part.

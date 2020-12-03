@@ -10,6 +10,7 @@ public class Ewok {
 	private int serialNumber;
 	private boolean available;
 	private Object lock=new Object();
+	private boolean waiting=false;
 
 	public Ewok (int serialNumber){
 	    available = true;
@@ -20,7 +21,7 @@ public class Ewok {
      * Acquires an Ewok
      */
     public synchronized void acquire() throws InterruptedException {
-            while (!available){lock.wait();}
+            while (!available){waiting=true;lock.wait();waiting=false;}
             available=false;
     }
 
@@ -30,7 +31,7 @@ public class Ewok {
     public void release() { //Todo check if its necessary to add synchronized
         if(!available) {
             available = true;
-            lock.notifyAll();
+           if(waiting) lock.notifyAll();
         }
 
     }
