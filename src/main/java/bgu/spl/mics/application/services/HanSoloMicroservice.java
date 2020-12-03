@@ -40,7 +40,7 @@ public class HanSoloMicroservice extends MicroService {
             public void call(AttackEvent c) throws InterruptedException {
                 Attack attack=c.getAttack();
                 for(Integer integer:attack.getSerial()){
-                 //   while(!ewoks.EwokIsAvailable(integer.intValue())){wait();}; todo check this option
+                 //   while(!ewoks.EwokIsAvailable(integer.intValue())){wait();};
                     ewoks.EwokIsAcquire(integer.intValue());////this method is blocking todo probably this will be dead-block
                 }
                 Thread.currentThread().sleep(attack.getDuration());//Attacking in process

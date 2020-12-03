@@ -30,7 +30,7 @@ public class Future<T> {
      * @return return the result of type T if it is available, if not wait until it is available.
      * 	       
      */
-	public T get() throws InterruptedException { //todo check the throws allowed
+	public T get() throws InterruptedException {
 		while(!isDone){wait();};// blocking, busy-work
         return result;
 	}
@@ -63,11 +63,10 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) throws InterruptedException {
-		if(isDone) {return result;}
-		else{
+		if (!isDone) {
 			unit.sleep(timeout);
-			return result;
 		}
+		return result;
 	}
 
 }

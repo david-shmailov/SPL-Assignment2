@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Do not add to this class nothing but a single constructor, getters and setters.
  */
 public class Diary {
-    private static volatile Diary diary=null; //TODO check if need volatile or synchronized in constructor
+    private static volatile Diary diary=null;
     private AtomicInteger totalAttacks=new AtomicInteger(0);
     private long HanSoloFinish;
     private long C3POFinish ;
@@ -27,7 +27,7 @@ public class Diary {
      * @param
      */
     private Diary(){}
-    public static synchronized Diary getInstance(){
+    public static Diary getInstance(){
         if (diary==null) diary=new Diary();
         return diary;
     }

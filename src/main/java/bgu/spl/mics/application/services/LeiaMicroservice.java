@@ -36,7 +36,7 @@ public class LeiaMicroservice extends MicroService {
         }
     	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
         notifyAll();
-        //TODO double check what happens if this is sent before Han and C3Po register
+        //TODO double check what happens if this is sent before Han and C3Po register (should not happen since MS are registered when constructed)
 
     	this.subscribeEvent(AttacksCompletedEvent.class,c -> {
     	    counter++;
