@@ -33,7 +33,7 @@ public abstract class MicroService implements Runnable {
      * @param name the micro-service name (used mainly for debugging purposes -
      *             does not have to be unique)
      */
-    public MicroService(String name) { //TODO we need to alter the signature to be able to accept a pointer to the message-bus instance. waiting for forum answer
+    public MicroService(String name) {
         this.name=name;
         bus=MessageBusImpl.getInstance();
         actionTable=new HashMap<>();
@@ -129,7 +129,7 @@ public abstract class MicroService implements Runnable {
      *               {@code e}.
      */
     protected final <T> void complete(Event<T> e, T result) {
-    	bus.complete(e,result); //TODO may need to add more
+    	bus.complete(e,result);
     }
 
     /**
@@ -154,19 +154,19 @@ public abstract class MicroService implements Runnable {
     }
 
     /**
-     * The entry point of the micro-service. TODO: you must complete this code
+     * The entry point of the micro-service.
      * otherwise you will end up in an infinite loop.
      */
     @Override
     public final void run() {
         this.initialize();
-    	while(active){ //TODO change true to something more serious
+    	while(active){
     	    try {
                 Message m = bus.awaitMessage(this);
                 Callback action = actionTable.get(m);
                 action.call(m);
             }catch (IllegalStateException exp){
-    	        break;//todo figure out what to do in this case. we want it to stop the whole program and throw an exception
+    	        break;
             }catch (InterruptedException exp){
     	        break;
             }

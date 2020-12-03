@@ -39,6 +39,7 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
+
 			if(!MapOfEvents.containsKey(type)){//TODO add maybe synchronized
 				Queue<MicroService> queue= new LinkedList<>();
 				MapOfEvents.put(type, queue);
@@ -101,7 +102,7 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public Message awaitMessage(MicroService m) throws InterruptedException {// TODO check where to throw exception
+	public Message awaitMessage(MicroService m) throws InterruptedException {
 		while (MapOfMicroService.get(m.getName()).isEmpty()){wait();};// this call is blocking
 		return MapOfMicroService.get(m.getName()).poll();
 	}

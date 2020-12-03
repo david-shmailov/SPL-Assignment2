@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Future<T> {
 	private boolean isDone;
     private T result;
-	
+
 	/**
 	 * This should be the the only public constructor in this class.
 	 */
@@ -63,11 +63,10 @@ public class Future<T> {
      *         elapsed, return null.
      */
 	public T get(long timeout, TimeUnit unit) throws InterruptedException {
-		if(isDone) {return result;}
-		else{
+		if (!isDone) {
 			unit.sleep(timeout);
-			return result;
 		}
+		return result;
 	}
 
 }

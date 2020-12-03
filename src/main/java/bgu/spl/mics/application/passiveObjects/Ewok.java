@@ -8,7 +8,7 @@ package bgu.spl.mics.application.passiveObjects;
  */
 public class Ewok {
 	private int serialNumber;
-	private boolean available;
+	private volatile boolean available;
 	private Object lock=new Object();
 
 
@@ -28,7 +28,7 @@ public class Ewok {
     /**
      * release an Ewok
      */
-    public void release() { //Todo check if its necessary to add synchronized
+    public void release() { //Todo check if its necessary to add synchronized (we put volatile)
         if(!available) {
             available = true;
             lock.notifyAll();
