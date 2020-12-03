@@ -20,9 +20,13 @@ public class Ewok {
     /**
      * Acquires an Ewok
      */
-    public synchronized void acquire() throws InterruptedException {
-            while (!available){lock.wait();}
-            available=false;
+    public void acquire() throws InterruptedException {
+        synchronized (lock) {
+            while (!available) {
+                lock.wait();
+            }
+            available = false;
+        }
     }
 
     /**
@@ -31,7 +35,8 @@ public class Ewok {
     public void release() { //Todo check if its necessary to add synchronized (we put volatile)
         if(!available) {
             available = true;
-            lock.notifyAll();
+            synchronized(lock){
+            lock.notifyAll();}
         }
 
     }
@@ -39,8 +44,9 @@ public class Ewok {
     /**
      * query if the ewok is available
      */
-    public synchronized boolean isAvailable(){
-        return available;
+    public boolean isAvailable(){
+        synchronized (lock){
+        return available;}
     }
     /**
      * getter where add

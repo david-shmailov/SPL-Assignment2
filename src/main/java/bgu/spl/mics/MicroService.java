@@ -163,7 +163,7 @@ public abstract class MicroService implements Runnable {
     	while(active){
     	    try {
                 Message m = bus.awaitMessage(this);
-                Callback action = actionTable.get(m);
+                Callback action = actionTable.get(m.getClass());
                 action.call(m);
             }catch (IllegalStateException exp){
     	        break;
