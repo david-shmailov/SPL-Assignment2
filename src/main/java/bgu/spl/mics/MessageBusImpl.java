@@ -20,7 +20,6 @@ public class MessageBusImpl implements MessageBus {
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
 	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast;
-	private Object lock=new Object();
 
 
 	private MessageBusImpl() {// constructor
@@ -74,30 +73,33 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public void sendBroadcast(Broadcast b) {
-		Queue<MicroService> queueOfBroadcast= MapOfBroadcast.get(b.getClass());
-		for (MicroService a :queueOfBroadcast ) {
-			MapOfMicroService.get(a.getName()).add(b);
-		}
-		synchronized(lock)
-		{
-			lock.notifyAll();
+		if (MapOfBroadcast.get(b.getClass()) != null) {
+			Queue<MicroService> queueOfBroadcast = MapOfBroadcast.get(b.getClass());
+			for (MicroService a : queueOfBroadcast) {
+				MapOfMicroService.get(a.getName()).add(b);
+			}
+			synchronized (this) {
+				notifyAll();
+			}
 		}
 	}
 
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		Queue<MicroService> queueOfEvent= MapOfEvents.get(e.getClass());
-		MicroService first= queueOfEvent.poll();               // round-robin implement
-		queueOfEvent.add(first);                               // round-robin implement
-		MapOfMicroService.get(first.getName()).add(e);
-		Future<T> result=new Future<>();
-		MapOfFuture.put(e, result);
-		synchronized(lock)
-		{
-			lock.notifyAll();
+		if (MapOfEvents.get(e.getClass()) != null) {
+			Queue<MicroService> queueOfEvent = MapOfEvents.get(e.getClass());
+			MicroService first = queueOfEvent.poll();               // round-robin implement
+			queueOfEvent.add(first);                               // round-robin implement
+			MapOfMicroService.get(first.getName()).add(e);
+			Future<T> result = new Future<>();
+			MapOfFuture.put(e, result);
+			synchronized (this) {
+				notifyAll();
+			}
+			return result;
 		}
-        return result;
+		return null;
 	}
 
 	@Override
@@ -113,9 +115,9 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {
-		synchronized (lock) {
+		synchronized (this) {
 			while (MapOfMicroService.get(m.getName()).isEmpty()) {
-				lock.wait();
+				wait();
 			}
 			;// this call is blocking
 			return MapOfMicroService.get(m.getName()).poll();

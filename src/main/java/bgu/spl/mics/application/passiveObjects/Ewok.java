@@ -9,7 +9,6 @@ package bgu.spl.mics.application.passiveObjects;
 public class Ewok {
 	private int serialNumber;
 	private volatile boolean available;
-	private Object lock=new Object();
 
 
 	public Ewok (int serialNumber){
@@ -21,9 +20,9 @@ public class Ewok {
      * Acquires an Ewok
      */
     public void acquire() throws InterruptedException {
-        synchronized (lock) {
+        synchronized (this) {
             while (!available) {
-                lock.wait();
+                wait();
             }
             available = false;
         }
@@ -35,8 +34,8 @@ public class Ewok {
     public void release() { //Todo check if its necessary to add synchronized (we put volatile)
         if(!available) {
             available = true;
-            synchronized(lock){
-            lock.notifyAll();}
+            synchronized(this){
+            notifyAll();}
         }
 
     }
@@ -45,7 +44,7 @@ public class Ewok {
      * query if the ewok is available
      */
     public boolean isAvailable(){
-        synchronized (lock){
+        synchronized (this){
         return available;}
     }
     /**
