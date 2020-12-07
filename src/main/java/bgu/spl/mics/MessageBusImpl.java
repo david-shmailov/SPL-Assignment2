@@ -15,6 +15,7 @@ public class MessageBusImpl implements MessageBus {
 	private static class SingletonHolder{
 		private static MessageBusImpl bus=new MessageBusImpl();
 	}
+	//TODO consider to change to concurrent hashmap or other thread safe data structure
 	private HashMap<String,Queue<Message>> MapOfMicroService;
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
