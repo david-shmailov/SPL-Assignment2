@@ -33,12 +33,7 @@ public class Main {
 				attacks[i] = gson.fromJson(user.attacks[i], Attack.class);
 			}
 			reader.close();
-			/**
-			this mess first initializes an array of Attacks. then it must go through each user2[i] "Attack"
-			and make a real attack object using the relevant data. to do this it also has to transfer the current array of ints
-			into a List data structure (chosen here to be vector). it then creates an attack object with said vector and the attack length,
-			and pushes that new Attack object into the attacks array we created. this is all so we can initialize leia.
-			 */
+
 
 
 			//Main logic
@@ -61,7 +56,7 @@ public class Main {
 			//start the party
 			han.start();
 			c3po.start();
-			latch.await();
+			latch.await(); // yair said in the forum we can and should use this method
 			lando.start();
 			r2d2.start();
 			leia.start();

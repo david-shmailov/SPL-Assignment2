@@ -30,8 +30,14 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 
-	public static synchronized MessageBusImpl getInstance(){
-		if(bus==null) bus=new MessageBusImpl();
+	public static MessageBusImpl getInstance(){ //todo attempt to remove sync by just initlizing the instance in the field
+		if(bus==null){
+			synchronized (MessageBusImpl.class){
+				if(bus == null){
+					bus=new MessageBusImpl();
+				}
+			}
+		}
 		return bus;
 	}
 
