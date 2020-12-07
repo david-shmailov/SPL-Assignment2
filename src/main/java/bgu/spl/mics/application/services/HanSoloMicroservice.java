@@ -44,14 +44,14 @@ public class HanSoloMicroservice extends MicroService {
             public void call(AttackEvent c) throws InterruptedException {
                 Attack attack=c.getAttack();
                 for(Integer integer:attack.getSerial()){
-                 //   while(!ewoks.EwokIsAvailable(integer.intValue())){wait();};
+
                     ewoks.EwokIsAcquire(integer.intValue());////this method is blocking todo probably this will be dead-block
                 }
                 Thread.currentThread().sleep(attack.getDuration());//Attacking in process
                 for(Integer integer: attack.getSerial()){
                     ewoks.EwokIsRelease(integer.intValue());//this method notify the other service that need this ewok
                 }
-                //notifyAll();    //so C3P0 come out from wait
+                //so C3P0 come out from wait
                 complete(c,true);
                 c.setDone();
                 diary.addAttack();

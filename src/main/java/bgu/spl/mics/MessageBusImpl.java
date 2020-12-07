@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -21,12 +22,12 @@ public class MessageBusImpl implements MessageBus {
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
 	private HashMap<Class<? extends Broadcast>,Queue<MicroService>> MapOfBroadcast;
 
-
 	private MessageBusImpl() {// constructor
 		MapOfMicroService = new HashMap<>();
 		MapOfFuture = new HashMap<>();
 		MapOfEvents = new HashMap<>();
 		MapOfBroadcast = new HashMap<>();
+
 	}
 
 
@@ -39,7 +40,6 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public synchronized  <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-
 			if(!MapOfEvents.containsKey(type)){//TODO add maybe synchronized
 				Queue<MicroService> queue= new LinkedList<>();
 				MapOfEvents.put(type, queue);
@@ -57,8 +57,6 @@ public class MessageBusImpl implements MessageBus {
 				MapOfBroadcast.put(type,queue);
 			}
 			MapOfBroadcast.get(type).add(m);
-
-
 		}
 		else System.out.println("need to register before subscribe");
     }
