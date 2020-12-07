@@ -15,7 +15,9 @@ import java.util.Queue;
  * Only private fields and methods can be added to this class.
  */
 public class MessageBusImpl implements MessageBus {
-	private static MessageBusImpl bus=null;
+	private static class SingletonHolder{
+		private static MessageBusImpl bus=new MessageBusImpl();
+	}
 	private HashMap<String,Queue<Message>> MapOfMicroService;
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
@@ -30,9 +32,8 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 
-	public static synchronized MessageBusImpl getInstance(){ //todo attempt to remove sync by just initlizing the instance in the field
-		if(bus==null) bus=new MessageBusImpl();
-		return bus;
+	public static MessageBusImpl getInstance(){
+		return SingletonHolder.bus;
 	}
 
 
