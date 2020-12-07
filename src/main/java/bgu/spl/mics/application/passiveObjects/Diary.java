@@ -35,7 +35,7 @@ public class Diary {
     /**
      * setters
      */
-    public void addAttack(){totalAttacks.incrementAndGet();} //TODO check this update right
+    public void addAttack(){totalAttacks.incrementAndGet();}
     public void setC3POTerminate(){C3POTerminate=System.currentTimeMillis();}
     public void setHanSoloTerminate(){HanSoloTerminate=System.currentTimeMillis();}
     public void setLandoTerminate(){LandoTerminate=System.currentTimeMillis();}

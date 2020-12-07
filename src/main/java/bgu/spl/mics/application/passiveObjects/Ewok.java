@@ -31,11 +31,12 @@ public class Ewok {
     /**
      * release an Ewok
      */
-    public void release() { //Todo check if its necessary to add synchronized (we put volatile)
+    public void release() {
         if(!available) {
             available = true;
             synchronized(this){
-            notifyAll();}
+                notifyAll();
+            }
         }
 
     }
