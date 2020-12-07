@@ -166,7 +166,7 @@ public abstract class MicroService implements Runnable {
                 Callback action = actionTable.get(m.getClass());
                 action.call(m);
             }catch (IllegalStateException exp){
-    	        System.out.println(name + "throwed IllegalStateException");
+    	        System.out.println(name + "IllegalStateException"); //for debug only
     	        break;
             }catch (InterruptedException exp){
     	        Thread.currentThread().interrupt();
