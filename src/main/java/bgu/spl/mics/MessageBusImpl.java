@@ -1,13 +1,8 @@
 package bgu.spl.mics;
 
-
-
-
 import java.util.HashMap;
 import java.util.LinkedList;
-
 import java.util.Queue;
-
 
 /**
  * The {@link MessageBusImpl class is the implementation of the MessageBus interface.
@@ -41,7 +36,6 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public synchronized  <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		if( MapOfMicroService.containsKey(m.getName())){
-
 			if(!MapOfEvents.containsKey(type)){//TODO add maybe synchronized
 				Queue<MicroService> queue= new LinkedList<>();
 				MapOfEvents.put(type, queue);

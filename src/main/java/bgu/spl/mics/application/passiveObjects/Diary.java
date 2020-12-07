@@ -64,7 +64,7 @@ public class Diary {
     public long Terminate(){
         long max=Math.max(Math.max(Math.max(Math.max(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
                 LandoTerminate);
-        long min=Math.min(HanSoloFinish,C3POFinish);
+        long min=Math.max(HanSoloFinish,C3POFinish);
         return max-min;
     }
 
