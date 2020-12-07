@@ -1,8 +1,5 @@
 package bgu.spl.mics;
 
-
-
-
 import java.util.HashMap;
 import java.util.LinkedList;
 

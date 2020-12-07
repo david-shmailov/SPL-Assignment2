@@ -160,15 +160,16 @@ public abstract class MicroService implements Runnable {
     @Override
     public final void run() {
         this.initialize();
-    	while(active){
+    	while(active && !Thread.currentThread().isInterrupted()){
     	    try {
                 Message m = bus.awaitMessage(this);
                 Callback action = actionTable.get(m.getClass());
                 action.call(m);
             }catch (IllegalStateException exp){
+    	        System.out.println(name + "throwed IllegalStateException");
     	        break;
             }catch (InterruptedException exp){
-    	        break;
+    	        Thread.currentThread().interrupt();
             }
         }
 
