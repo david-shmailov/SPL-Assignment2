@@ -2,6 +2,7 @@ package bgu.spl.mics.application.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import bgu.spl.mics.Callback;
 import bgu.spl.mics.MicroService;
@@ -20,13 +21,13 @@ import bgu.spl.mics.application.passiveObjects.Diary;
 public class LeiaMicroservice extends MicroService {
 	private Attack[] attacks;
 	private Diary diary;
-	private int counter;
+    private AtomicInteger counter;
 
     public LeiaMicroservice(Attack[] attacks) {
         super("Leia");
 		this.attacks = attacks;
 		diary=Diary.getInstance();
-		counter = 0;
+        counter=new AtomicInteger(0);
     }
 
     @Override
@@ -37,8 +38,7 @@ public class LeiaMicroservice extends MicroService {
     	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
 
     	this.subscribeEvent(AttacksCompletedEvent.class,c -> {
-    	    counter++;
-            if (counter == 2) {
+            if (attacks.length==diary.getTotalAttacks().get()) {
                 sendEvent(new DeactivationEvent());
             }
     	}); //once Leia was notified twice that attacks have been completed (both Han and C3PO transmitted they have finished) she can broadcast Deactivation

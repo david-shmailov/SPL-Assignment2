@@ -2,6 +2,8 @@ package bgu.spl.mics.application.passiveObjects;
 
 
 
+import bgu.spl.mics.MessageBusImpl;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,16 +13,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Do not add to this class nothing but a single constructor, getters and setters.
  */
 public class Diary {
-    private static volatile Diary diary=null;
+    private static class SingletonHolder{
+        private static Diary diary=new Diary();
+    }
+  //  private static volatile Diary diary=null;
     private AtomicInteger totalAttacks=new AtomicInteger(0);
-    private long HanSoloFinish;
-    private long C3POFinish ;
-    private long R2D2Deactivate;
-    private long LeiaTerminate;
-    private long HanSoloTerminate;
-    private long C3POTerminate;
-    private long R2D2Terminate;
-    private long LandoTerminate;
+    private long HanSoloFinish=0;
+    private long C3POFinish =0;
+    private long R2D2Deactivate=0;
+    private long LeiaTerminate=0;
+    private long HanSoloTerminate=0;
+    private long C3POTerminate=0;
+    private long R2D2Terminate=0;
+    private long LandoTerminate=0;
 
     /**
      * constructor
@@ -28,8 +33,7 @@ public class Diary {
      */
     private Diary(){}
     public static Diary getInstance(){
-        if (diary==null) diary=new Diary();
-        return diary;
+      return SingletonHolder.diary;
     }
 
     /**
@@ -51,7 +55,7 @@ public class Diary {
     /**
      * getters
      */
-    public int getTotalAttacks(){return totalAttacks.get();}
+    public AtomicInteger getTotalAttacks(){return totalAttacks;}
     public long getHanSoloFinish(){return HanSoloFinish;}
     public long getC3POFinish(){return C3POFinish;}
     public long Finish(){return Math.abs(HanSoloFinish-C3POFinish);}
@@ -86,5 +90,18 @@ public class Diary {
                 "\"R2D2Terminate\":  " + R2D2Terminate +",\n"+
                 "\"LandoTerminate\":  " + LandoTerminate +"\n"+
                 '}';
+    }
+
+    public void resetNumberAttacks() {
+        totalAttacks=new AtomicInteger(0);
+        HanSoloFinish=0;
+        HanSoloTerminate=0;
+        C3POFinish=0;
+        C3POTerminate=0;
+        LandoTerminate=0;
+        LeiaTerminate=0;
+        R2D2Deactivate=0;
+        R2D2Terminate=0;
+
     }
 }
