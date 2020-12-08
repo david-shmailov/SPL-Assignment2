@@ -1,6 +1,7 @@
 package bgu.spl.mics.application.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -33,6 +34,7 @@ public class LeiaMicroservice extends MicroService {
     @Override
     protected void initialize() {
     	for (Attack attack : attacks){
+    	    attack.getSerial().sort(Comparator.comparingInt(o -> o)); //sorts the ewok serials to avoid dead-locks between Han and C3P0
     	    sendEvent(new AttackEvent(attack));
         }
     	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
