@@ -1,12 +1,11 @@
 package bgu.spl.mics;
 
-import bgu.spl.mics.application.messages.AttackEvent;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * The {@link MessageBusImpl class is the implementation of the MessageBus interface.
@@ -17,7 +16,6 @@ public class MessageBusImpl implements MessageBus {
 	private static class SingletonHolder{
 		private static MessageBusImpl bus=new MessageBusImpl();
 	}
-	//TODO consider to change to concurrent hashmap or other thread safe data structure
 	private HashMap<MicroService,Queue<Message>> MapOfMicroService;
 	private HashMap<Event,Future> MapOfFuture;
 	private HashMap<Class<? extends Event>,Queue<MicroService>> MapOfEvents;
@@ -136,9 +134,9 @@ public class MessageBusImpl implements MessageBus {
 	public Message awaitMessage(MicroService m) throws InterruptedException {
 		synchronized (this) {
 			while (MapOfMicroService.get(m).isEmpty()) {
-				wait();
+				wait();;// this call is blocking
 			}
-			;// this call is blocking
+
 			return MapOfMicroService.get(m).poll();
 		}
 	}

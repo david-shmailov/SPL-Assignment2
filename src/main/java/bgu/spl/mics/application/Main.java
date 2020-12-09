@@ -34,11 +34,9 @@ public class Main {
 			}
 			reader.close();
 
-
-
-			//Main logic
-			//init objects
-
+			/** Main logic
+			init objects
+            */
 			Diary diary=Diary.getInstance();
 			Ewoks ewokHome = new Ewoks(user.Ewoks);
 			HanSoloMicroservice Han = new HanSoloMicroservice(ewokHome,latch);

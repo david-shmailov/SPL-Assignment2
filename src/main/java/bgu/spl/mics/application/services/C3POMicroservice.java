@@ -9,7 +9,6 @@ import bgu.spl.mics.application.messages.TerminateBroadcast;
 import bgu.spl.mics.application.passiveObjects.Attack;
 import bgu.spl.mics.application.passiveObjects.Diary;
 import bgu.spl.mics.application.passiveObjects.Ewoks;
-
 import java.util.concurrent.CountDownLatch;
 
 
@@ -44,7 +43,6 @@ public class C3POMicroservice extends MicroService {
             public void call(AttackEvent c) throws InterruptedException {
                 Attack attack=c.getAttack();
                 for(Integer integer: attack.getSerial()){
-                //todo probably this will be dead-block
                    ewoks.EwokIsAcquire(integer.intValue());//this method is blocking
                 }
                 Thread.currentThread().sleep(attack.getDuration());//Attacking in process

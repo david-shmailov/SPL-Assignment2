@@ -1,8 +1,6 @@
 package bgu.spl.mics.application.passiveObjects;
 
 
-import java.lang.reflect.Array;
-
 /**
  * Passive object representing the resource manager.
  * <p>
@@ -24,14 +22,14 @@ public class Ewoks {
     /**
        getters
      */
-    public Ewok getEwok(int seiralnum){return arrayOfEwok[seiralnum];}
-    public boolean EwokIsAvailable (int serialnum){return arrayOfEwok[serialnum].isAvailable(); }
+    public Ewok getEwok(int serial){return arrayOfEwok[serial];}
+    public boolean EwokIsAvailable (int serial){return arrayOfEwok[serial].isAvailable(); }
 
 
     /**
      setters
      */
-    public void EwokIsRelease(int serialnum){arrayOfEwok[serialnum].release();}
-    public void EwokIsAcquire(int serialnum) throws InterruptedException {arrayOfEwok[serialnum].acquire();}
+    public void EwokIsRelease(int serial){arrayOfEwok[serial].release();}
+    public void EwokIsAcquire(int serial) throws InterruptedException {arrayOfEwok[serial].acquire();}
     //this method is blocking
 }

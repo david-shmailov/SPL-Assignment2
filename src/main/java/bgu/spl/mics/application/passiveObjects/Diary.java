@@ -1,9 +1,5 @@
 package bgu.spl.mics.application.passiveObjects;
 
-
-
-import bgu.spl.mics.MessageBusImpl;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,7 +25,6 @@ public class Diary {
 
     /**
      * constructor
-     * @param
      */
     private Diary(){}
     public static Diary getInstance(){
@@ -65,16 +60,10 @@ public class Diary {
     public long getC3POTerminate(){return C3POTerminate;}
     public long getR2D2Terminate(){return R2D2Terminate;}
     public long getLandoTerminate(){return LandoTerminate;}
-    public long Terminate(){
-        long max=Math.max(Math.max(Math.max(Math.max(LeiaTerminate,HanSoloTerminate),C3POTerminate),R2D2Terminate),
-                LandoTerminate);
-        long min=Math.max(HanSoloFinish,C3POFinish);
-        return max-min;
-    }
+
 
     /**
      * to string
-     * @return
      */
 
     @Override
