@@ -2,6 +2,7 @@ package bgu.spl.mics;
 
 
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * The MicroService is an abstract class that any micro-service in the system
@@ -26,6 +27,7 @@ public abstract class MicroService implements Runnable {
     private MessageBus bus;
     private HashMap<Class<? extends Message>, Callback> actionTable;
     private boolean active;
+
 
 
 
@@ -90,6 +92,7 @@ public abstract class MicroService implements Runnable {
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
         bus.subscribeBroadcast(type,this);
         actionTable.put(type,callback);
+
     }
 
     /**
@@ -172,6 +175,8 @@ public abstract class MicroService implements Runnable {
     	        Thread.currentThread().interrupt();
             }
         }
+    	bus.unregister(this);
+    	active=true;
 
     }
 

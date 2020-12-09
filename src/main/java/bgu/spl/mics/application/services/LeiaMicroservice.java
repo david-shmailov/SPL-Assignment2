@@ -40,6 +40,7 @@ public class LeiaMicroservice extends MicroService {
     	sendBroadcast(new DoneSendingAttacksBroadcast()); //Leia sends a broadcast she has finished sending events.
 
     	this.subscribeEvent(AttacksCompletedEvent.class,c -> {
+    	    complete(c,true);
             if (attacks.length==diary.getTotalAttacks().get()) {
                 sendEvent(new DeactivationEvent());
             }

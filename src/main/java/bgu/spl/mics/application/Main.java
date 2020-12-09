@@ -22,7 +22,7 @@ public class Main {
 	static final CountDownLatch latch = new CountDownLatch(2);
 	public static void main(String[] args) {
 		/**
-		 * read input file to user1 and user2[]
+		 * read input file to user
 		 */
 		try {
 			Gson gson = new Gson();
@@ -68,14 +68,6 @@ public class Main {
 			leia.join();
 
 			Writer writer = Files.newBufferedWriter(Paths.get(args[1]));
-			/**
-			 writer.write("There are "+diary.getTotalAttacks() +" attacks.\n");
-			 writer.write("HanSolo and C3PO finish their tasks ~"
-			 +diary.Finish()+
-			 " milliseconds one after the other.\n");
-			 writer.write("All threads  terminate ~"+diary.Terminate()+" milliseconds later\n");
-			 */
-
 			writer.write(diary.toString());
 			writer.close();
 
