@@ -75,21 +75,20 @@ public class MessageBusImpl implements MessageBus {
 	}
 
 	@Override
-	public void sendBroadcast(Broadcast b) {
+	public synchronized void sendBroadcast(Broadcast b) {
 		if (MapOfBroadcast.get(b.getClass()) != null) {
 			Queue<MicroService> queueOfBroadcast = MapOfBroadcast.get(b.getClass());
 			for (MicroService a : queueOfBroadcast) {
 				MapOfMicroService.get(a).add(b);
 			}
-			synchronized (this) {
 				notifyAll();
 			}
 		}
-	}
+
 
 	
 	@Override
-	public <T> Future<T> sendEvent(Event<T> e) {
+	public synchronized  <T> Future<T> sendEvent(Event<T> e) {
 		if (MapOfEvents.get(e.getClass()) != null) {
 			Queue<MicroService> queueOfEvent = MapOfEvents.get(e.getClass());
 			MicroService first = queueOfEvent.poll();               // round-robin implement
@@ -97,9 +96,7 @@ public class MessageBusImpl implements MessageBus {
 			MapOfMicroService.get(first).add(e);
 			Future<T> result = new Future<>();
 			MapOfFuture.put(e, result);
-			synchronized (this) {
 				notifyAll();
-			}
 			return result;
 		}
 		return null;
